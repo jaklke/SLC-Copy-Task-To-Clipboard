@@ -4,7 +4,7 @@
 // @match       https://collaboration.dataminer.services/*
 // @grant       none
 // @version     1.1
-// @author      Jan-Klaas Kesteloot
+// @author      JKE, TCR
 // @description 28/3/2024, 17:26:21
 // ==/UserScript==
 
