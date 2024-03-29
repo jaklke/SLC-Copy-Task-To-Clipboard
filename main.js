@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Copy Task To Clipboard+
+// @name        Copy Task To Clipboard
 // @namespace   Violentmonkey Scripts
 // @match       https://collaboration.dataminer.services/*
 // @grant       none
@@ -80,24 +80,24 @@
           }
       }
 
-      function observeToolbarVisibility() {
+      function observeToolbarVisibility(retry) {
         var toolbar = document.querySelector('div.toolbar-btn-group');
         if (toolbar) {
             addButtonToToolbar();
-        } else {
-            setTimeout(observeToolbarVisibility, 250);
+            return;
+        }
+        if (retry > 0) {
+            setTimeout(observeToolbarVisibility, 250, retry -1);
         }
     }
 
       document.addEventListener('click', function(event) {
-        if (event.target.id === 'openEditTaskModalButton') {
-            observeToolbarVisibility()
-        }
+            observeToolbarVisibility(4)
     });
 
 
 
-    observeToolbarVisibility();
+    observeToolbarVisibility(4);
 
 
      // window.addEventListener('popstate', function (event) {
@@ -107,6 +107,3 @@
 
 
   })();
-
-
-
