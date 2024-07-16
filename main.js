@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://collaboration.dataminer.services/*
 // @grant       none
-// @version     1.1
+// @version     1.1.1
 // @author      JKE, TCR
 // @description 28/3/2024, 17:26:21
 // ==/UserScript==
@@ -23,36 +23,32 @@
 
 
 
-      function buttonClickFunction() {
-          // Execute your desired function here
-           // Find the <a> tag under the div with id "dropdownMenMoreOptions"
-              const taskTitleInput = document.getElementById('taskTitle');
-              if(taskTitleInput) {
-              const dropdownMenu = document.getElementById('dropdownMenMoreOptions');
-              if (dropdownMenu) {
-                  const link = dropdownMenu.querySelector('a');
-                  if (link) {
-                      // Extract the number from the URL
-                      const url = link.getAttribute('href');
-                      const number = url.match(/\d+$/);
-                      if (number) {
-                          // Copy the extracted number to clipboard
-                          copyToClipboard('<a href="https://collaboration.dataminer.services/task/' + number[0] + '">' + taskTitleInput.value + '</a> (' + number[0] + ')');
-                          //alert('Number copied to clipboard!');
-                      } else {
-                          alert('Number not found in URL!');
-                      }
-                  } else {
-                      alert('Anchor tag not found under the dropdown menu!');
-                  }
-              } else {
-                  alert('Dropdown menu with id "dropdownMenMoreOptions" not found!');
-              }
-          } else {
-              alert('Input field with id "taskTitle" not found!');
+   function buttonClickFunction() {
+    // Find the input field with id "taskTitle"
+    const taskTitleInput = document.getElementById('taskTitle');
 
-          }
-      }
+    if (taskTitleInput) {
+        // Get the current URL
+        const currentUrl = window.location.href;
+
+        if (currentUrl) {
+            // Extract the number from the URL
+            let number = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+            const queryIndex = number.indexOf('?');
+
+            if (queryIndex != -1) {
+                number = number.substring(0, queryIndex);
+            }
+
+            // Copy the extracted number to the clipboard
+            copyToClipboard('<a href="https://collaboration.dataminer.services/task/' + number + '">' + taskTitleInput.value + '</a> (' + number + ')');            
+        } else {
+            alert('URL could not be identified.');
+        }
+    } else {
+        alert('Input field with id "taskTitle" not found!');
+    }
+}
 
       function addButtonToToolbar() {
           //var toolbarButtonGroup = document.querySelector('.toolbar-btn-group');
