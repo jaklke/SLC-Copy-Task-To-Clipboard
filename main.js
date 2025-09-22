@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://collaboration.dataminer.services/*
 // @grant       none
-// @version     1.1.1
+// @version     1.1.2
 // @author      JKE, TCR
 // @description 28/3/2024, 17:26:21
 // ==/UserScript==
@@ -26,6 +26,7 @@
    function buttonClickFunction() {
     // Find the input field with id "taskTitle"
     const taskTitleInput = document.getElementById('taskTitle');
+    const releaseNoteTitle = document.getElementById('releaseNoteTitle');
 
     if (taskTitleInput) {
         // Get the current URL
@@ -41,12 +42,31 @@
             }
 
             // Copy the extracted number to the clipboard
-            copyToClipboard('<a href="https://collaboration.dataminer.services/task/' + number + '">' + taskTitleInput.value + '</a> (' + number + ')');            
+            copyToClipboard('<a href="https://collaboration.dataminer.services/task/' + number + '">' + taskTitleInput.value + '</a> (task ' + number + ')');
         } else {
-            alert('URL could not be identified.');
+            alert('Task URL could not be identified.');
         }
-    } else {
-        alert('Input field with id "taskTitle" not found!');
+    } else if (releaseNoteTitle) {
+        // Get the current URL
+        const currentUrl = window.location.href;
+
+        if (currentUrl) {
+            // Extract the number from the URL
+            let number = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+            const queryIndex = number.indexOf('?');
+
+            if (queryIndex != -1) {
+                number = number.substring(0, queryIndex);
+            }
+
+            // Copy the extracted number to the clipboard
+            copyToClipboard('<a href="https://collaboration.dataminer.services/releasenotes/' + number + '">' + releaseNoteTitle.value + '</a> (RN ' + number + ')');
+        } else {
+            alert('RN URL could not be identified.');
+        }
+    } else 
+    {
+        alert('Input field with id "taskTitle" or "releaseNoteTitle" not found!');
     }
 }
 
